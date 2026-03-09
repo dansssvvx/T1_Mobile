@@ -1,14 +1,24 @@
+/* 
+AHMAD RAMADHANI R
+F1D02310102
+*/
+
 // Fungsi untuk menentukan apakah mahasiswa lulus atau tidak berdasarkan nilai akhir
-fun lulus(nilai: Double): String {
+fun getStatus(nilai: Double): String {
+    return if (nilai >= 60) "LULUS" else "TIDAK LULUS"
+}
+
+// Fungsi untuk memberikan pesan selamat atau semangat
+fun getPesan(nilai: Double): String {
     return if (nilai >= 60) {
-        "Selamat! anda dinyatakan LULUS!"
+        "Selamat! Anda dinyatakan LULUS."
     } else {
         "Mohon Maaf, Anda Tidak Lulus, coba lagi tahun depan!"
     }
 }
 
 // Fungsi untuk memberikan keterangan berdasarkan rentang nilai akhir
-fun keterangan(nilai: Double): String {
+fun getKeterangan(nilai: Double): String {
     return when (nilai) {
         in 85.0..100.0 -> "Sangat Baik"
         in 70.0..84.9 -> "Baik"
@@ -19,7 +29,7 @@ fun keterangan(nilai: Double): String {
 }
 
 // Fungsi untuk menentukan grade berdasarkan nilai akhir
-fun grade(nilai: Double): String {
+fun getGrade(nilai: Double): String {
     return when (nilai) {
         in 85.0..100.0 -> "A"
         in 70.0..84.9 -> "B"
@@ -30,63 +40,44 @@ fun grade(nilai: Double): String {
 }
 
 // Fungsi untuk melakukan handle failure pada input nilai
-fun validasiinput(input: Int): Int {
-    return if (input in 0..100) {
-        input
-    } else {
-        //jika input tidak valid, tampilkan pesan error dan minta input ulang
-        println("Nilai tidak valid. Masukkan nilai antara 0 dan 100.")
-        val ulang = readLine()?.toIntOrNull()
-        if (ulang != null) {
-            validasiinput(ulang)
+fun validasiInput(label: String): Int {
+    while (true) {
+        print("Masukkan Nilai $label (0-100): ")
+        val input = readLine()?.toIntOrNull()
+        if (input != null && input in 0..100) {
+            return input
         } else {
-            //jika input tidak bisa diubah menjadi angka, tampilkan pesan error dan minta input ulang
-            println("Input harus berupa angka.")
-            validasiinput(-1)
+            println("Nilai tidak valid. Masukkan nilai antara 0 dan 100.")
         }
     }
 }
 
-/* 
-AHMAD RAMADHANI R
-F1D02310102
-*/
-
-fun main(){
-    // Deklarasi variabel untuk menyimpan data mahasiswa dan nilai uts, uas serta tugas
-    val nama: String
-    val nilaiuts: Int
-    val nilaiuas: Int
-    val nilaitugas: Int
-    val nilaiakhir: Double
-
-    println("==== SISTEM PENILAIAN ====")
+fun main() {
+    println("===== SISTEM PENILAIAN =====")
+    println("")
 
     print("Masukkan Nama Mahasiswa: ")
-    nama = readLine()!!
-    print("Masukkan Nilai UTS (0-100 ): ")
-    nilaiuts = validasiinput(readLine()!!.toInt())//input nilai UTS dengan validasi menggunakan fungsi validasiinput
-    print("Masukkan Nilai UAS (0-100 ): ")
-    nilaiuas = validasiinput(readLine()!!.toInt())//input nilai UAS dengan validasi menggunakan fungsi validasiinput
-    print("Masukkan Nilai Tugas (0-100 ): ")
-    nilaitugas = validasiinput(readLine()!!.toInt())//input nilai Tugas dengan validasi menggunakan fungsi validasiinput
+    val nama = readLine() ?: "Mahasiswa"
+    
+    val nilaiUTS = validasiInput("UTS")
+    val nilaiUAS = validasiInput("UAS")
+    val nilaiTugas = validasiInput("Tugas")
 
-    //nilai akhir dihitung berdasarkan bobot masing-masing komponen penilaian, yaitu UTS 30%, UAS 40% dan Tugas 30%
-    nilaiakhir = (nilaiuts * 0.3) + (nilaiuas * 0.4) + (nilaitugas * 0.3)
+    // Nilai akhir dihitung berdasarkan bobot: UTS 30%, UAS 40% dan Tugas 30%
+    val nilaiAkhir = (nilaiUTS * 0.3) + (nilaiUAS * 0.4) + (nilaiTugas * 0.3)
 
     println("")
-    println("==== HASIL PENILAIAN ====")
-
-    println("Nama Mahasiswa: $nama")
-    println("Nilai UTS: $nilaiuts (Bobot 30%)" )
-    println("Nilai UAS: $nilaiuas (Bobot 40%)" )
-    println("Nilai Tugas: $nilaitugas (Bobot 30%)" )
-    println("------------------------------" )
-    println("Nilai Akhir: $nilaiakhir" )
-    println("Grade: " + grade(nilaiakhir))
-    println("Keterangan: " + keterangan(nilaiakhir))
+    println("===== HASIL PENILAIAN =====")
+    println("Nama        : $nama")
+    println("Nilai UTS   : $nilaiUTS (Bobot 30%)")
+    println("Nilai UAS   : $nilaiUAS (Bobot 40%)")
+    println("Nilai Tugas : $nilaiTugas (Bobot 30%)")
+    println("------------------------------")
+    println("Nilai Akhir : $nilaiAkhir")
+    println("Grade       : ${getGrade(nilaiAkhir)}")
+    println("Keterangan  : ${getKeterangan(nilaiAkhir)}")
+    println("Status      : ${getStatus(nilaiAkhir)}")
     println("")
     
-    println(lulus(nilaiakhir))
-
+    println(getPesan(nilaiAkhir))
 }
