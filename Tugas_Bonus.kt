@@ -3,12 +3,26 @@ AHMAD RAMADHANI R
 F1D02310102
 */
 
-// 1. Data Class
-data class Produk(val id: String, val nama: String, val harga: Double, val kategori: String, var stok: Int)
-data class CartItem(val produk: Produk, var jumlah: Int)
-data class Customer(val id: String, val nama: String, val email: String, val alamat: String?)
+// Data Class
+data class Produk(
+    val id: String,
+    val nama: String, 
+    val harga: Double, 
+    val kategori: String, 
+    var stok: Int
+)
+data class CartItem(
+    val produk: Produk, 
+    var jumlah: Int
+)
+data class Customer(
+    val id: String, 
+    val nama: String, 
+    val email: String, 
+    val alamat: String?
+)
 
-// 2. Sealed Class for OrderStatus
+// Sealed Class for OrderStatus
 sealed class OrderStatus {
     object Pending : OrderStatus()
     object Processing : OrderStatus()
@@ -19,7 +33,7 @@ sealed class OrderStatus {
     override fun toString(): String = this.javaClass.simpleName
 }
 
-// 3. Sealed Class for PaymentMethod
+// Sealed Class for PaymentMethod
 sealed class PaymentMethod {
     object Cash : PaymentMethod()
     object Transfer : PaymentMethod()
